@@ -47,6 +47,14 @@ Open <http://localhost:8080/>. The static frontend and REST API share the same o
 
 To confirm which Java installation VS Code and the terminal use, run `java -version`. If Java is missing or older than 17, install a Java 17 JDK, set `JAVA_HOME` to its installation folder, add `%JAVA_HOME%\bin` to `PATH`, restart VS Code, then check again. A newer JDK can run this Java 17 project, but Java 17 is the documented baseline.
 
+## Deploy to Render
+
+The repository includes a Dockerfile and `render.yaml` Blueprint for the Spring Boot app and a separate MySQL 8 service. In Render, choose **New → Blueprint**, connect this GitHub repository, and review the services and monthly estimate before applying. Render generates the MySQL passwords and passes them to the app as environment variables; keep those values in Render and do not commit them.
+
+The web app uses Render's free plan, which can sleep when idle and take longer to answer the first request after sleeping. MySQL requires a paid private service and a 10 GB persistent disk; the current price is shown in Render before you create the Blueprint. Its disk keeps database files between deploys. Keep a separate database backup as well. See [Render's MySQL deployment guide](https://render.com/docs/deploy-mysql) and [pricing](https://render.com/pricing).
+
+After deployment, open the web service's `onrender.com` URL. The frontend and `/api` endpoints are served from that same URL. Changes pushed to `main` redeploy the web service automatically. The MySQL service does not auto-deploy on code pushes.
+
 ## Features
 
 - Dashboard totals for books, students, available copies, and issued copies.
